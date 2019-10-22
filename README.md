@@ -3,9 +3,21 @@
 I wrote some shell scripts to start and stop the docker containers.   
 
 **[startctr.sh](startctr.sh)** : Start the container. 
+```console
+Usage : startctr <container_name> [OPTION]
 
+OPTION: \'-sh\' start bash shell
+
+[*] To start docker only use : 
+   $ startctr <container_name>
+
+[*] To start docker with bash shell/OR shell on running container : 
+   $ startctr <container_name> -sh
+```
 **[stopctr.sh](stopctr.sh)** : Stop running container.
-
+```console
+Usage : stopctr <container_name>
+```
 ## Deployment : 
 
 Copy the content of **[deploy.sh](deploy.sh)**,  at end of your `.bashrc` file. `.bashrc` file generally located on `$USER` directory.
