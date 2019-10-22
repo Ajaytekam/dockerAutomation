@@ -6,7 +6,7 @@ I wrote some shell scripts to start and stop the docker containers.
 ```console
 Usage : startctr <container_name> [OPTION]
 
-OPTION: \'-sh\' start bash shell
+OPTION: '-sh' start bash shell
 
 [*] To start docker only use : 
    $ startctr <container_name>
