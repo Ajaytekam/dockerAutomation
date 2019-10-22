@@ -2,9 +2,9 @@
 
 I wrote some shell scripts to start and stop the docker containers.   
 
-**[startctr.sh](startctr.sh)** : Start the docker. 
+**[startctr.sh](startctr.sh)** : Start the container. 
 
-**[stopctr.sh](stopctr.sh)** : Stop running docker.
+**[stopctr.sh](stopctr.sh)** : Stop running container.
 
 ## Deployment : 
 
