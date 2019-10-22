@@ -28,9 +28,13 @@ Copy the content of **[deploy.sh](deploy.sh)**,  at end of your `.bashrc` file. 
 
 ### Some aliases :
 
-* List running container :
+* List running containers :
 ``` 
 alias "dockerls=docker ps --format '{{.Names}}'"
+```
+* List all containers :
+` `` 
+alias "dockerlsa=docker ps -a --format '{{.Names}}'"
 ```
 
 add it at end of `.bashrc` file.
