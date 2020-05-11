@@ -13,7 +13,7 @@ startctr() {
     then
         echo -e "\e[31m[!] ERROR: Argument not provided.\e[0m"
         echo -e "  Usage : startctr <container_name> [OPTION]\n"
-        echo -e "OPTION: \'-sh\' start bash shell\n"
+        echo -e "OPTION: '-sh' start bash shell\n"
         echo "[*] To start docker only use : "
         echo -e "   $ startctr <container_name>\n"
         echo "[*] To start docker with bash shell/OR shell on running container : "
@@ -75,18 +75,41 @@ startctr() {
     fi
 }
 
+#!/bin/bash
+# code for stopctr
+# Check container is currently running or not
+flag=false
+rdkr=(`docker ps --format '{{.Names}}'`)
+
+ShowRunningCT() {
+	if [ ${#rdkr} -gt 0 ]
+	then
+		echo "Currently runnig Containers are : "
+		echo "========================"
+		for x in "${rdkr[@]}"
+		do
+			echo "$x"
+		done
+		echo "========================"
+	else
+		echo -e "\e[31m[!] Theres no running container at the moment.\e[0m"
+	fi
+}
+
 stopctr() {
 
     if [ -z "$1" ]
     then
         echo -e "\e[31m[!] ERROR: Argument not provided.\e[0m"
-        echo -e "   Usage : stopctr <container_name>"
-        return
-    fi
+        echo -e "   Usage : stopctr <container_name>\n"
+		echo -e "OPTION: '-l' list currently running containers"
+		return
+    elif [ "$1" == "-l" ]
+	then 
+		ShowRunningCT
+		return
+	fi
 
-    # Check container is currently running or not
-    flag=false
-    rdkr=(`docker ps --format '{{.Names}}'`)
     for var in "${rdkr[@]}"
     do
         if [ $1 == $var ]
@@ -102,17 +125,8 @@ stopctr() {
         echo -e "\e[32m[+] SUCCESS: Container stopped Successfully.\e[0m"
     else
         echo -e "\e[31m[!] ERROR: Theres no running container named \"$1\".\e[0m"
-        if [ ${#rdkr} -gt 0 ]
-        then
-            echo "Currently runnig Containers are : "
-            echo "========================"
-            for x in "${rdkr[@]}"
-            do
-                echo "$x"
-            done
-            echo "========================"
-        else
-            echo -e "\e[31m[!] Theres no running container at the moment.\e[0m"
-        fi
-    fi
+    	
+	fi
 }
+
+stopctr $1
