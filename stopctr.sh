@@ -4,6 +4,20 @@
 flag=false
 rdkr=(`docker ps --format '{{.Names}}'`)
 
+
+StopAllCT() {
+	if [ ${#rdkr} -gt 0 ]
+	then
+		for x in "${rdkr[@]}"
+		do
+        	docker container stop $x 1> /dev/null
+        	echo -e "\e[32m[+] ${x} \t: stopped Successfully.\e[0m"
+		done
+	else
+		echo -e "\e[31m[!] Theres no running container at the moment.\e[0m"
+	fi
+}
+
 ShowRunningCT() {
 	if [ ${#rdkr} -gt 0 ]
 	then
@@ -30,6 +44,10 @@ stopctr() {
     elif [ "$1" == "-l" ]
 	then 
 		ShowRunningCT
+		return
+	elif [ "$1" == "-all" ]
+	then
+		StopAllCT
 		return
 	fi
 
