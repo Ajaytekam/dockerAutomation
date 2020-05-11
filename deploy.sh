@@ -128,5 +128,3 @@ stopctr() {
     	
 	fi
 }
-
-stopctr $1
