@@ -1,53 +1,46 @@
 #!/bin/bash
 # code for stopctr
-# Check container is currently running or not
-flag=false
-rdkr=(`docker ps --format '{{.Names}}'`)
-
-
-StopAllCT() {
-	if [ ${#rdkr} -gt 0 ]
-	then
-		for x in "${rdkr[@]}"
-		do
-        	docker container stop $x 1> /dev/null
-        	echo -e "\e[32m[+] ${x} \t: stopped Successfully.\e[0m"
-		done
-	else
-		echo -e "\e[31m[!] Theres no running container at the moment.\e[0m"
-	fi
-}
-
-ShowRunningCT() {
-	if [ ${#rdkr} -gt 0 ]
-	then
-		echo "Currently runnig Containers are : "
-		echo "========================"
-		for x in "${rdkr[@]}"
-		do
-			echo "$x"
-		done
-		echo "========================"
-	else
-		echo -e "\e[31m[!] Theres no running container at the moment.\e[0m"
-	fi
-}
 
 stopctr() {
-
+	# Check container is currently running or not
+	flag=false
+	rdkr=(`docker ps --format '{{.Names}}'`)
     if [ -z "$1" ]
     then
-        echo -e "\e[31m[!] ERROR: Argument not provided.\e[0m"
-        echo -e "   Usage : stopctr <container_name>\n"
-		echo -e "OPTION: '-l' list currently running containers"
+		echo -e "\n\tUsage : stopctr <container_name> [OPTION]\n"
+		echo -e "OPTION:- \n"
+		echo -e "[*] '-l' list currently running containers"
+		echo -e "[*] '-all' stop all running containers"
 		return
     elif [ "$1" == "-l" ]
 	then 
-		ShowRunningCT
+		# code for list all running containers
+		if [ ${#rdkr} -gt 0 ]
+		then
+			echo "Currently runnig Containers are : "
+			echo "========================"
+			for x in "${rdkr[@]}"
+			do
+				echo "$x"
+			done
+			echo "========================"
+		else
+			echo -e "\e[31m[!] Theres no running container at the moment.\e[0m"
+		fi
 		return
 	elif [ "$1" == "-all" ]
 	then
-		StopAllCT
+		# code to stop all running containers
+		if [ ${#rdkr} -gt 0 ]
+		then
+			for x in "${rdkr[@]}"
+			do
+        		docker container stop $x 1> /dev/null
+        		echo -e "\e[32m[+] ${x} \t: stopped Successfully.\e[0m"
+			done
+		else
+			echo -e "\e[31m[!] Theres no running container at the moment.\e[0m"
+		fi	
 		return
 	fi
 

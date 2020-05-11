@@ -4,8 +4,7 @@ startctr() {
 
     if [ -z "$1" ]
     then
-        echo -e "\e[31m[!] ERROR: Argument not provided.\e[0m"
-        echo -e "  Usage : startctr <container_name> [OPTION]\n"
+		echo -e "\n\tUsage : startctr <container_name> [OPTION]\n"
         echo -e "OPTION: '-sh' start bash shell\n"
         echo "[*] To start docker only use : "
         echo -e "   $ startctr <container_name>\n"

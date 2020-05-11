@@ -4,7 +4,7 @@ I wrote some shell scripts to start and stop the docker containers.
 
 **[startctr.sh](startctr.sh)** : Start the container. 
 ```console
-Usage : startctr <container_name> [OPTION]
+	Usage : startctr <container_name> [OPTION]
 
 OPTION: '-sh' start bash shell
 
@@ -16,9 +16,12 @@ OPTION: '-sh' start bash shell
 ```
 **[stopctr.sh](stopctr.sh)** : Stop running container.
 ```console
-Usage : stopctr <container_name>
+	Usage : stopctr <container_name> [OPTION]
 
-OPTION: '-l' list currently running containers
+OPTION:- 
+
+[*] '-l' list currently running containers
+[*] '-all' stop all running containers
 ```
 ## Deployment : 
 
