@@ -17,6 +17,8 @@ OPTION: '-sh' start bash shell
 **[stopctr.sh](stopctr.sh)** : Stop running container.
 ```console
 Usage : stopctr <container_name>
+
+OPTION: '-l' list currently running containers
 ```
 ## Deployment : 
 
