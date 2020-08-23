@@ -1,5 +1,6 @@
 # My Docker container automation Shell scripts
 
+## Update :  Scripts for sudoer docker [Sudoer_Scripts](sudo_docker/README.md)
 I wrote some shell scripts to start and stop the docker containers.   
 
 **[startctr.sh](startctr.sh)** : Start the container. 

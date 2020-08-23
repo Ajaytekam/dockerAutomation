@@ -1,4 +1,5 @@
 # code for stopctr
+
 stopctr() {
     if [ -z "$1" ]
     then
@@ -8,12 +9,22 @@ stopctr() {
 		echo -e "[*] '-all' stop all running containers"
 		return
 	fi
-	
-	# Check container is currently running or not
-	flag=false
-	rdkr=(`docker ps --format '{{.Names}}'`)
 
-	if [ "$1" == "-l" ]
+    # code for authentication
+    ret=0 # useless command just for setting $? = 0
+    sudo -v  
+    if [ $? -ne 0 ] 
+    then
+        echo -e "\e[31m[!] Authentication Error\e[0m"
+        echo "!Please Enter sudo password"
+        return
+    fi  
+
+	# Check if any container is currently running or not
+	flag=false
+	rdkr=(`sudo docker ps --format '{{.Names}}'`)
+
+    if [ "$1" == "-l" ]
 	then 
 		# code for list all running containers
 		if [ ${#rdkr} -gt 0 ]
@@ -36,7 +47,7 @@ stopctr() {
 		then
 			for x in "${rdkr[@]}"
 			do
-        		docker container stop $x 1> /dev/null
+        		sudo docker container stop $x 1> /dev/null
         		echo -e "\e[32m[+] ${x} \t: stopped Successfully.\e[0m"
 			done
 		else
@@ -56,7 +67,7 @@ stopctr() {
 
     if $flag
     then
-        docker container stop $1
+        sudo docker container stop $1
         echo -e "\e[32m[+] SUCCESS: Container stopped Successfully.\e[0m"
     else
         echo -e "\e[31m[!] ERROR: Theres no running container named \"$1\".\e[0m"

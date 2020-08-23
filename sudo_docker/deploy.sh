@@ -5,24 +5,33 @@
 #    startctr <container_name> -sh      // start container and also start bash shell
 #    stopctr <container_name>           // stop container 
 #
-######
-
+######  
+# StartCtr for sudoer docker
+# you can also use `sudo -K` to drop the cached auth at the end of the script
 startctr() {
-
     if [ -z "$1" ]
     then
-        echo -e "\n\tUsage : startctr <container_name> [OPTION]\n"
-        echo -e "OPTION: '-sh' start bash shell\n"
-        echo "[*] To start docker only use : "
-        echo -e "   $ startctr <container_name>\n"
-        echo "[*] To start docker with bash shell/OR shell on running container : "
-        echo -e "   $ startctr <container_name> -sh\n"
-        return
-    fi
+		echo -e "\n\tUsage : startctr <container_name> [OPTION]\n"
+		echo -e "OPTION: '-sh' start bash shell\n"
+		echo "[*] To start docker only use : "
+		echo -e "   $ startctr <container_name>\n"
+		echo "[*] To start docker with bash shell/OR shell on running container : "
+		echo -e "   $ startctr <container_name> -sh\n"
+		return
+	fi
+
+	# code for authentication
+	sudo -v 
+	if [ $? -ne 0 ]
+	then
+		echo "\e[31m[!] Authentication Error\e[0m"
+		echo "!Please Enter sudo password"
+		return
+	fi
 
     # Check container exists or not
     flag=true
-    rdkr=(`docker ps -a --format '{{.Names}}'`)
+    rdkr=(`sudo docker ps -a --format '{{.Names}}'`)
     for var in "${rdkr[@]}"
     do
         if [ $1 == $var ]
@@ -47,7 +56,7 @@ startctr() {
 
     # check if container is currently running or not
     flag=false
-    rdkr=(`docker ps --format '{{.Names}}'`)
+    rdkr=(`sudo docker ps --format '{{.Names}}'`)
     for var in "${rdkr[@]}"
     do
         if [ $1 == $var ]
@@ -61,7 +70,7 @@ startctr() {
     then
         echo "Container \"$1\" is already running."
     else
-        docker container start $1
+        sudo docker container start $1
         echo -e "\e[32m[+] SUCCESS: Container started Successfully.\e[0m"
     fi
 
@@ -70,27 +79,39 @@ startctr() {
         return
     elif [ "$2" == "-sh" ]
     then
-        docker container exec -it $1 bash
+        sudo docker container exec -it $1 bash
     fi
 }
 
+##################
 # code for stopctr
+# you can also use `sudo -K` to drop the cached auth at the end of the script
 stopctr() {
     if [ -z "$1" ]
     then
-        echo -e "\n\tUsage : stopctr <container_name> [OPTION]\n"
+		echo -e "\n\tUsage : stopctr <container_name> [OPTION]\n"
 		echo -e "OPTION:- \n"
 		echo -e "[*] '-l' list currently running containers"
 		echo -e "[*] '-all' stop all running containers"
 		return
-    fi
+	fi
 
-	# Check container is currently running or not
+    # code for authentication
+    ret=0 # useless command just for setting $? = 0
+    sudo -v  
+    if [ $? -ne 0 ] 
+    then
+        echo -e "\e[31m[!] Authentication Error\e[0m"
+        echo "!Please Enter sudo password"
+        return
+    fi  
+
+	# Check if any container is currently running or not
 	flag=false
-	rdkr=(`docker ps --format '{{.Names}}'`)
+	rdkr=(`sudo docker ps --format '{{.Names}}'`)
 
-	if [ "$1" == "-l" ]
-	then
+    if [ "$1" == "-l" ]
+	then 
 		# code for list all running containers
 		if [ ${#rdkr} -gt 0 ]
 		then
@@ -112,12 +133,12 @@ stopctr() {
 		then
 			for x in "${rdkr[@]}"
 			do
-        		docker container stop $x 1> /dev/null
+        		sudo docker container stop $x 1> /dev/null
         		echo -e "\e[32m[+] ${x} \t: stopped Successfully.\e[0m"
 			done
 		else
 			echo -e "\e[31m[!] Theres no running container at the moment.\e[0m"
-		fi
+		fi	
 		return
 	fi
 
@@ -132,10 +153,11 @@ stopctr() {
 
     if $flag
     then
-        docker container stop $1
+        sudo docker container stop $1
         echo -e "\e[32m[+] SUCCESS: Container stopped Successfully.\e[0m"
     else
         echo -e "\e[31m[!] ERROR: Theres no running container named \"$1\".\e[0m"
-
+    	
 	fi
 }
+###### Code ends here
