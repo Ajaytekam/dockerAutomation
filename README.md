@@ -24,6 +24,14 @@ OPTION:-
 [*] '-l' list currently running containers
 [*] '-all' stop all running containers
 ```
+
+**[dockerls.sh](dockerls.sh)** : List Running containers with IP Addresses.   
+
+```console  
+[*] Ubuntu              [172.17.0.3]
+[*] SoundCloud          [172.17.0.2]
+```  
+
 ## Deployment : 
 
 Copy the content of **[deploy.sh](deploy.sh)**,  at end of your `.bashrc` file. `.bashrc` file generally located on `$USER` directory.
